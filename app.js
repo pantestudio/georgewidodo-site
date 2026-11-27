@@ -42,7 +42,6 @@ const recs = [];
   const np = $('#npT');
   $('#shelves').addEventListener('pointerover', e => { const b = e.target.closest('.rec'); if (!b) return; const r = R[+b.dataset.i]; np.textContent = `${r.brand} — ${r.cases.map(c => c.title).join(' / ')}`; });
   $('#shelves').addEventListener('click', e => { const b = e.target.closest('.rec'); if (!b) return; openCase(+b.dataset.i, 0, b); });
-  $('#wallSign').onclick = () => openAbout();
 })();
 
 let pos = 0, target = 0, raf = 0, cur = -1, flipped = -1;
@@ -345,7 +344,6 @@ $('#pill').addEventListener('click', e => {
   if (k === 'index') { const on = $('#index').hidden; $('#about').hidden = true; $('#index').hidden = !on; setPill(on ? 'index' : 'crate'); }
   if (k === 'about') { if ($('#about').hidden) openAbout(); else { $('#about').hidden = true; setPill('crate'); } }
 });
-$('#brand').onclick = e => { e.preventDefault(); goTo(0); };
 
 /* keys */
 zine.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.film) e.target.click(); });
@@ -373,4 +371,41 @@ setTimeout(() => { $('#hint').classList.add('on'); if (!store.flipped) { sleeves
 // deep link: #ichigo etc.
 const h = location.hash.slice(1); if (h) { const f = FLAT.find(f => R[f.ri].cases[f.ci].id === h); if (f) setTimeout(() => openCase(f.ri, f.ci, sleeves[f.ri]), 300); }
 window.__gw = { R, openCase, closeCase, goTo, setFlip, film, stepCase, openAbout, state: () => ({ pos, cur, flipped, open }) };
+/* GW Records: tap the logo and it bounces round the screen like a DVD screensaver */
+(() => {
+  const COLS = ['#FF3B2F', '#F2C14E', '#7FD7FF', '#FF5FB0', '#5EE08A', '#F3EAD8'];
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  let fly = null, src = null, raf = 0, x = 0, y = 0, vx = 150, vy = 115, ci = 0, last = 0;
+  const step = t => {
+    const dt = Math.min(.05, (t - (last || t)) / 1000); last = t;
+    const W = innerWidth - fly.offsetWidth, H = innerHeight - fly.offsetHeight;
+    x += vx * dt; y += vy * dt; let hit = false;
+    if (x <= 0 || x >= W) { vx = -vx; x = Math.max(0, Math.min(W, x)); hit = true; }
+    if (y <= 0 || y >= H) { vy = -vy; y = Math.max(0, Math.min(H, y)); hit = true; }
+    if (hit) fly.style.setProperty('--neon', COLS[ci = (ci + 1) % COLS.length]);
+    fly.style.transform = `translate(${x}px,${y}px)`;
+    raf = requestAnimationFrame(step);
+  };
+  const land = () => {
+    cancelAnimationFrame(raf);
+    const r = src.getBoundingClientRect(), f = fly, s = src;
+    f.style.transition = 'transform .7s cubic-bezier(.2,.8,.2,1)';
+    f.style.transform = `translate(${r.left}px,${r.top}px)`;
+    fly = null;
+    setTimeout(() => { f.remove(); s.classList.remove('gwr-ghost'); }, 720);
+  };
+  const launch = logo => {
+    if (fly || still.matches) return;
+    src = logo; const r = logo.getBoundingClientRect();
+    fly = logo.cloneNode(true); fly.classList.add('fly'); fly.style.setProperty('--s', getComputedStyle(logo).getPropertyValue('--s').trim());
+    fly.setAttribute('role', 'button'); fly.tabIndex = 0; fly.setAttribute('aria-label', 'Bouncing GW Records logo. Tap to send it home.');
+    x = r.left; y = r.top; vx = (Math.random() < .5 ? -1 : 1) * 150; vy = 115; last = 0;
+    fly.style.transform = `translate(${x}px,${y}px)`;
+    document.body.appendChild(fly); logo.classList.add('gwr-ghost');
+    fly.addEventListener('click', land);
+    raf = requestAnimationFrame(step);
+  };
+  ['#wallSign', '#brand'].forEach(sel => { const b = $(sel); if (b) b.addEventListener('click', e => { e.preventDefault(); fly ? land() : launch(b.querySelector('.gwr')); }); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && fly) land(); });
+})();
 })();

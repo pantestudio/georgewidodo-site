@@ -7,6 +7,7 @@
 <title>George Widodo — Creative Director</title>
 <link rel="preload" href="fonts/PPEditorialNew-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/Archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Archivo-var-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -15,12 +16,12 @@
   <!-- HOME: the crate -->
   <section class="home" id="home" aria-label="Selected work">
     <header class="top">
-      <a class="brand" href="#" id="brand" aria-label="George Widodo — home"><span class="sign sm"><i class="dot"></i><b>George Widodo</b></span></a>
+      <button class="brand" id="brand" aria-label="GW Records logo. Tap to set it bouncing."><span class="gwr" style="--s:.36"><span class="in"><svg class="gl" viewBox="0 0 230 84" width="230" height="84" aria-hidden="true"><text x="115" y="78" text-anchor="middle" fill="currentColor">GW</text></svg><span class="disc" aria-hidden="true"><span class="tilt"><span class="cd"></span></span></span><span class="gl rcd" aria-hidden="true">RECORDS</span></span></span></button>
       <div class="top-r"><span class="clock" id="clock">Bali --:--</span><button class="theme" id="theme" aria-label="Switch day and night"><i></i></button></div>
     </header>
     <!-- DESKTOP: the record wall -->
     <div class="wall" id="wall" aria-label="Selected work">
-      <button class="sign lg" id="wallSign" aria-label="George Widodo"><i class="dot"></i><b>George Widodo</b><em>On air</em></button>
+      <button class="wall-logo" id="wallSign" aria-label="GW Records logo. Tap to set it bouncing."><span class="gwr" style="--s:var(--LS)"><span class="in"><svg class="gl" viewBox="0 0 230 84" width="230" height="84" aria-hidden="true"><text x="115" y="78" text-anchor="middle" fill="currentColor">GW</text></svg><span class="disc" aria-hidden="true"><span class="tilt"><span class="cd"></span></span></span><span class="gl rcd" aria-hidden="true">RECORDS</span></span></span></button>
       <div class="shelves" id="shelves"></div>
       <div class="credenza"><span class="lamp l"></span><span class="np" id="np"><i>Now playing</i><b id="npT">Pick a record</b></span><span class="lamp r"></span></div>
     </div>
@@ -38,7 +39,7 @@
   <!-- CASE STUDY: unfolds from the sleeve -->
   <section class="case" id="case" hidden aria-label="Case study">
     <nav class="cbar" aria-label="Case navigation">
-      <button class="cb-sign" data-go="crate" aria-label="Back to the wall"><span class="sign sm"><i class="dot"></i><b>GW</b></span></button>
+      <button class="cb-sign" data-go="crate" aria-label="Back to the wall"><span class="gwr" style="--s:.27"><span class="in"><svg class="gl" viewBox="0 0 230 84" width="230" height="84" aria-hidden="true"><text x="115" y="78" text-anchor="middle" fill="currentColor">GW</text></svg><span class="disc" aria-hidden="true"><span class="tilt"><span class="cd"></span></span></span><span class="gl rcd" aria-hidden="true">RECORDS</span></span></span></button>
       <button class="cb-arrow" id="cPrev" aria-label="Previous project"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
       <ol class="crumbs" id="crumbs"></ol>
       <button class="cb-arrow" id="cNext" aria-label="Next project"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
